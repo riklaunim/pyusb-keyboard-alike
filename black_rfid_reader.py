@@ -18,3 +18,4 @@ if __name__ == "__main__":
     reader = RFIDReader(0x08ff, 0x0009, 84, 8, should_reset=False)
     reader.initialize()
     print(reader.read().strip())
+    reader.disconnect()

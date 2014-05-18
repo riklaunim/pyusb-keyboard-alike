@@ -13,11 +13,12 @@ class ReadException(Exception):
 
 
 class Reader(object):
-    def __init__(self, vendor_id, product_id, data_size, chunk_size, debug=False):
+    def __init__(self, vendor_id, product_id, data_size, chunk_size, should_reset, debug=False):
         self.vendor_id = vendor_id
         self.product_id = product_id
         self.data_size = data_size
         self.chunk_size = chunk_size
+        self.should_reset = should_reset
         self.debug = debug
         self._endpoint = None
 
@@ -35,6 +36,8 @@ class Reader(object):
 
         try:
             device.set_configuration()
+            if self.should_reset:
+                device.reset()
         except usb.core.USBError as e:
             raise DeviceException('Could not set configuration: %s' % str(e))
 

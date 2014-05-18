@@ -14,6 +14,15 @@ class ReadException(Exception):
 
 class Reader(object):
     def __init__(self, vendor_id, product_id, data_size, chunk_size, should_reset, debug=False):
+        """
+        :param vendor_id: USB vendor id (check dmesg or lsusb under Linux)
+        :param product_id: USB device id (check dmesg or lsusb under Linux)
+        :param data_size: how much data is expected to be read - check experimentally
+        :param chunk_size: chunk size like 6 or 8, check experimentally by looking on the raw output with debug=True
+        :param should_reset: if true will also try to reset device preventing garbage reading.
+        Doesn't work with all devices - locks them
+        :param debug: if true will print raw data
+        """
         self.vendor_id = vendor_id
         self.product_id = product_id
         self.data_size = data_size

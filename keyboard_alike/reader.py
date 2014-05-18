@@ -23,6 +23,7 @@ class Reader(object):
         Doesn't work with all devices - locks them
         :param debug: if true will print raw data
         """
+        self.interface = 0
         self.vendor_id = vendor_id
         self.product_id = product_id
         self.data_size = data_size
@@ -38,9 +39,9 @@ class Reader(object):
         if self._device is None:
             raise DeviceException('No device found, check vendor_id and product_id')
 
-        if self._device.is_kernel_driver_active(0):
+        if self._device.is_kernel_driver_active(self.interface):
             try:
-                self._device.detach_kernel_driver(0)
+                self._device.detach_kernel_driver(self.interface)
             except usb.core.USBError as e:
                 raise DeviceException('Could not detach kernel driver: %s' % str(e))
 
@@ -93,4 +94,5 @@ class Reader(object):
     def disconnect(self):
         if self.should_reset:
             self._device.reset()
-        self._device.releaseInterface()
+        usb.util.release_interface(self._device, self.interface)
+        self._device.attach_kernel_driver(self.interface)

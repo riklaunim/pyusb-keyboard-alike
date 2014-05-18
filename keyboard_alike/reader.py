@@ -12,7 +12,7 @@ class ReadException(Exception):
     pass
 
 
-class Reader:
+class Reader(object):
     def __init__(self, vendor_id, product_id, data_size, chunk_size, debug=False):
         self.vendor_id = vendor_id
         self.product_id = product_id
@@ -35,7 +35,6 @@ class Reader:
 
         try:
             device.set_configuration()
-            device.reset()
         except usb.core.USBError as e:
             raise DeviceException('Could not set configuration: %s' % str(e))
 
@@ -68,7 +67,8 @@ class Reader:
         shift_indicator_index = 0
         raw_key_value_index = 2
         for chunk in self.get_chunked_data(raw_data):
-            yield (chunk[shift_indicator_index], chunk[raw_key_value_index])
+            if len(chunk) == self.chunk_size:
+                yield (chunk[shift_indicator_index], chunk[raw_key_value_index])
 
     def get_chunked_data(self, raw_data):
         return mapping.chunk_data(raw_data, self.chunk_size)

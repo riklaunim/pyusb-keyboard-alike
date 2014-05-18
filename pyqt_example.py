@@ -26,7 +26,7 @@ class StartQT4(QtGui.QMainWindow):
         self.ui.setupUi(self)
         self._set_initial_usb_values()
 
-        self.rfidreader = RFIDReader(0x08ff, 0x0009, 84, 8, should_reset=False)
+        self.rfidreader = RFIDReader(0x08ff, 0x0009, 84, 16, should_reset=False)
         self.rfidreader.initialize()
 
         self._start_reader_thread()

@@ -81,8 +81,7 @@ class Reader(object):
         shift_indicator_index = 0
         raw_key_value_index = 2
         for chunk in self.get_chunked_data(raw_data):
-            if len(chunk) == self.chunk_size:
-                yield (chunk[shift_indicator_index], chunk[raw_key_value_index])
+            yield (chunk[shift_indicator_index], chunk[raw_key_value_index])
 
     def get_chunked_data(self, raw_data):
         return mapping.chunk_data(raw_data, self.chunk_size)

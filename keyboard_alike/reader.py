@@ -29,28 +29,29 @@ class Reader(object):
         self.chunk_size = chunk_size
         self.should_reset = should_reset
         self.debug = debug
+        self._device = None
         self._endpoint = None
 
     def initialize(self):
-        device = usb.core.find(idVendor=self.vendor_id, idProduct=self.product_id)
+        self._device = usb.core.find(idVendor=self.vendor_id, idProduct=self.product_id)
 
-        if device is None:
+        if self._device is None:
             raise DeviceException('No device found, check vendor_id and product_id')
 
-        if device.is_kernel_driver_active(0):
+        if self._device.is_kernel_driver_active(0):
             try:
-                device.detach_kernel_driver(0)
+                self._device.detach_kernel_driver(0)
             except usb.core.USBError as e:
                 raise DeviceException('Could not detach kernel driver: %s' % str(e))
 
         try:
-            device.set_configuration()
+            self._device.set_configuration()
             if self.should_reset:
-                device.reset()
+                self._device.reset()
         except usb.core.USBError as e:
             raise DeviceException('Could not set configuration: %s' % str(e))
 
-        self._endpoint = device[0][(0, 0)][0]
+        self._endpoint = self._device[0][(0, 0)][0]
 
     def read(self):
         data = []
@@ -63,7 +64,7 @@ class Reader(object):
             except usb.core.USBError as e:
                 if e.args[0] == 110 and data_read:
                     if len(data) < self.data_size:
-                        raise ReadException('Got %s bytes instead of %s' % (len(data), self.data_size))
+                        raise ReadException('Got %s bytes instead of %s - %s' % (len(data), self.data_size, str(data)))
                     else:
                         break
 
@@ -88,3 +89,8 @@ class Reader(object):
     @staticmethod
     def raw_data_to_keys(extracted_data):
         return ''.join(map(mapping.raw_to_key, extracted_data))
+
+    def disconnect(self):
+        if self.should_reset:
+            self._device.reset()
+        self._device.releaseInterface()

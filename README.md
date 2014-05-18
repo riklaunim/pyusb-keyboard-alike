@@ -33,6 +33,7 @@ The code flow is quite simple:
 * On init we connect to the USB reader and start a thread that will end when the USB device returns a result (or exception)
 * When thread is finished a signal is emitted that will be handled by *_receive_data* method. It checks if the thread set a return value
 and if so it will add it to list. On error it will print it and if it's repeating (device gone wild) it will terminate the application.
+In more production-ready applications the exception control should be more strict (like skipping trash-reads exception, but not exceptions preventing operations on the device).
 * If all is good *_receive_data* will start the reading thread again allowing the application to work continuously. 
 
 
@@ -67,6 +68,11 @@ If you want to handle your device then at start some experimenting/debugging is 
 
 * Some raw data examples can be found in the **examples_tests.py**
 * Set the correct chunk and data size - now it should work
+
+
+Pull requests
+-------------
+You got your device up and running? Provide a basic example with a pull request or send me a link to your blog post :)
 
 
 More on

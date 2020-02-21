@@ -28,7 +28,7 @@ def map_character(c):
 
 
 def chunk_data(data, chunks):
-    for i in xrange(0, len(data), chunks):
+    for i in range(0, len(data), chunks):
         yield data[i:i + chunks]
 
 

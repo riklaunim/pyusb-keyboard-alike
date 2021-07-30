@@ -13,6 +13,14 @@ class TestRFIDReader(unittest.TestCase):
         expected = '0027314141\n'
         self.assertEqual(expected, result)
 
+    def test_if_neuftech_raw_message_is_decoded(self):
+        reader = RFIDReader(0x16c0, 0x27db, 42, 3, should_reset=False)
+        raw_data = [1, 0, 39, 1, 0, 0, 1, 0, 39, 1, 0, 0, 1, 0, 39, 1, 0, 31, 1, 0, 30, 1, 0, 31, 1, 0, 37, 1, 0, 33, 1, 0, 36, 1, 0, 34, 1, 0, 40, 1, 0, 0]
+
+        result = reader.decode_raw_data(raw_data)
+        expected = '0002128475\n'
+        self.assertEqual(expected, result)
+
 
 class TestBarCodeReader(unittest.TestCase):
     def test_if_raw_message_is_decoded(self):

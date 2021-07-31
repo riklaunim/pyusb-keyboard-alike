@@ -1,7 +1,10 @@
+import usb
 import usb.core
 import usb.util
 
 from keyboard_alike import mapping
+
+assert usb.version_info >= (1, 0, 0)
 
 
 class DeviceException(Exception):

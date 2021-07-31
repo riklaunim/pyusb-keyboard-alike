@@ -12,6 +12,22 @@ Requirements
 * pyusb 1.X (not 0.4)
 
 
+Getting started
+---------------
+
+Install dependencies:
+
+    python -m pip install -r requirements.txt
+
+Remove need to run as root, give read/write permissions automatically
+
+    sudo cp 99-usb_rfid_reader.rules /etc/udev/rules.d/
+
+Its recommended reload rules (or reboot) and to unplug/re-plug
+
+    sudo udevadm control --reload-rules
+
+
 How to use
 ----------
 The **keyboard_alike** folder holds a re-usable Reader class. In most case you will be able to use it just by passing correct arguments.
@@ -20,8 +36,10 @@ There are device examples:
 
 * lindy_bar_code_scanner.py - Lindy USB bar code scanner
 * black_rfid_reader.py - USB 125 kHz RFID reader
+* neuftech_rfid_reader.py - USB YARONGTECH and Neuftech 125 kHz RFID Card Reader
 
-If you have matching device - connect it and run the code. Under Linux will have to run the code as root/sudo or give your user permission to access given device.
+
+If you have matching device - connect it and run the code. Under Linux will have to run the code as root/sudo or give your user permission to access given device (see udev rules above).
 
 
 PyQt4 application example
@@ -86,3 +104,4 @@ You can visit my sites for more tutorials and stuff:
 Credits
 -------
 * The code was based on https://github.com/guyzmo/tmsr33-pyusb by Guyzmo Pratz
+

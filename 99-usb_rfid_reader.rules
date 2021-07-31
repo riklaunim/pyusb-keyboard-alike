@@ -1,0 +1,11 @@
+# install via; sudo cp 99-usb_rfid_reader.rules /etc/udev/rules.d/
+
+# YARONGTECH and Neuftech USB RFID Card Reader
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="27db", MODE:="0666"
+
+# Lindy USB bar code scanner
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="6201", MODE:="0666"
+
+# //www.dx.com/p/intelligent-id-card-usb-reader-174455
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="08ff", ATTRS{idProduct}=="0009", MODE:="0666"
+
